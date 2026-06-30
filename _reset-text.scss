@@ -1,31 +1,16 @@
-// Pagination
+// Image Mixins
+// - Responsive image
+// - Retina image
 
-// scss-docs-start pagination-mixin
-@mixin pagination-size($padding-y, $padding-x, $font-size, $border-radius) {
-  .page-link {
-    padding: $padding-y $padding-x;
-    @include font-size($font-size);
-  }
 
-  .page-item {
-    @if $pagination-margin-start == (-$pagination-border-width) {
-      &:first-child {
-        .page-link {
-          @include border-start-radius($border-radius);
-        }
-      }
+// Responsive image
+//
+// Keep images from scaling beyond the width of their parents.
 
-      &:last-child {
-        .page-link {
-          @include border-end-radius($border-radius);
-        }
-      }
-    } @else {
-      //Add border-radius to all pageLinks in case they have left margin
-      .page-link {
-        @include border-radius($border-radius);
-      }
-    }
-  }
+@mixin img-fluid {
+  // Part 1: Set a maximum relative to the parent
+  max-width: 100%;
+  // Part 2: Override the height to auto, otherwise images will be stretched
+  // when setting a width and height attribute on the img element.
+  height: auto;
 }
-// scss-docs-end pagination-mixin

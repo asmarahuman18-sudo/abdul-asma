@@ -1,64 +1,36 @@
-// scss-docs-start caret-mixins
-@mixin caret-down {
-  border-top: $caret-width solid;
-  border-right: $caret-width solid transparent;
-  border-bottom: 0;
-  border-left: $caret-width solid transparent;
+//
+// Labels
+//
+
+.form-label {
+  margin-bottom: $form-label-margin-bottom;
+  @include font-size($form-label-font-size);
+  font-style: $form-label-font-style;
+  font-weight: $form-label-font-weight;
+  color: $form-label-color;
 }
 
-@mixin caret-up {
-  border-top: 0;
-  border-right: $caret-width solid transparent;
-  border-bottom: $caret-width solid;
-  border-left: $caret-width solid transparent;
+// For use with horizontal and inline forms, when you need the label (or legend)
+// text to align with the form controls.
+.col-form-label {
+  padding-top: add($input-padding-y, $input-border-width);
+  padding-bottom: add($input-padding-y, $input-border-width);
+  margin-bottom: 0; // Override the `<legend>` default
+  @include font-size(inherit); // Override the `<legend>` default
+  font-style: $form-label-font-style;
+  font-weight: $form-label-font-weight;
+  line-height: $input-line-height;
+  color: $form-label-color;
 }
 
-@mixin caret-end {
-  border-top: $caret-width solid transparent;
-  border-right: 0;
-  border-bottom: $caret-width solid transparent;
-  border-left: $caret-width solid;
+.col-form-label-lg {
+  padding-top: add($input-padding-y-lg, $input-border-width);
+  padding-bottom: add($input-padding-y-lg, $input-border-width);
+  @include font-size($input-font-size-lg);
 }
 
-@mixin caret-start {
-  border-top: $caret-width solid transparent;
-  border-right: $caret-width solid;
-  border-bottom: $caret-width solid transparent;
+.col-form-label-sm {
+  padding-top: add($input-padding-y-sm, $input-border-width);
+  padding-bottom: add($input-padding-y-sm, $input-border-width);
+  @include font-size($input-font-size-sm);
 }
-
-@mixin caret($direction: down) {
-  @if $enable-caret {
-    &::after {
-      display: inline-block;
-      margin-left: $caret-spacing;
-      vertical-align: $caret-vertical-align;
-      content: "";
-      @if $direction == down {
-        @include caret-down();
-      } @else if $direction == up {
-        @include caret-up();
-      } @else if $direction == end {
-        @include caret-end();
-      }
-    }
-
-    @if $direction == start {
-      &::after {
-        display: none;
-      }
-
-      &::before {
-        display: inline-block;
-        margin-right: $caret-spacing;
-        vertical-align: $caret-vertical-align;
-        content: "";
-        @include caret-start();
-      }
-    }
-
-    &:empty::after {
-      margin-left: 0;
-    }
-  }
-}
-// scss-docs-end caret-mixins

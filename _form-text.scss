@@ -1,67 +1,91 @@
-// Select
+// Range
 //
-// Replaces the browser default select with a custom one, mostly pulled from
-// https://primer.github.io/.
+// Style range inputs the same across browsers. Vendor-specific rules for pseudo
+// elements cannot be mixed. As such, there are no shared styles for focus or
+// active states on prefixed selectors.
 
-.form-select {
-  display: block;
+.form-range {
   width: 100%;
-  padding: $form-select-padding-y $form-select-indicator-padding $form-select-padding-y $form-select-padding-x;
-  font-family: $form-select-font-family;
-  @include font-size($form-select-font-size);
-  font-weight: $form-select-font-weight;
-  line-height: $form-select-line-height;
-  color: $form-select-color;
-  background-color: $form-select-bg;
-  background-image: escape-svg($form-select-indicator);
-  background-repeat: no-repeat;
-  background-position: $form-select-bg-position;
-  background-size: $form-select-bg-size;
-  border: $form-select-border-width solid $form-select-border-color;
-  @include border-radius($form-select-border-radius, 0);
-  @include box-shadow($form-select-box-shadow);
+  height: add($form-range-thumb-height, $form-range-thumb-focus-box-shadow-width * 2);
+  padding: 0; // Need to reset padding
+  background-color: transparent;
   appearance: none;
 
   &:focus {
-    border-color: $form-select-focus-border-color;
     outline: 0;
-    @if $enable-shadows {
-      @include box-shadow($form-select-box-shadow, $form-select-focus-box-shadow);
-    } @else {
-      // Avoid using mixin so we can pass custom focus shadow properly
-      box-shadow: $form-select-focus-box-shadow;
+
+    // Pseudo-elements must be split across multiple rulesets to have an effect.
+    // No box-shadow() mixin for focus accessibility.
+    &::-webkit-slider-thumb { box-shadow: $form-range-thumb-focus-box-shadow; }
+    &::-moz-range-thumb     { box-shadow: $form-range-thumb-focus-box-shadow; }
+  }
+
+  &::-moz-focus-outer {
+    border: 0;
+  }
+
+  &::-webkit-slider-thumb {
+    width: $form-range-thumb-width;
+    height: $form-range-thumb-height;
+    margin-top: ($form-range-track-height - $form-range-thumb-height) / 2; // Webkit specific
+    @include gradient-bg($form-range-thumb-bg);
+    border: $form-range-thumb-border;
+    @include border-radius($form-range-thumb-border-radius);
+    @include box-shadow($form-range-thumb-box-shadow);
+    @include transition($form-range-thumb-transition);
+    appearance: none;
+
+    &:active {
+      @include gradient-bg($form-range-thumb-active-bg);
     }
   }
 
-  &[multiple],
-  &[size]:not([size="1"]) {
-    padding-right: $form-select-padding-x;
-    background-image: none;
+  &::-webkit-slider-runnable-track {
+    width: $form-range-track-width;
+    height: $form-range-track-height;
+    color: transparent; // Why?
+    cursor: $form-range-track-cursor;
+    background-color: $form-range-track-bg;
+    border-color: transparent;
+    @include border-radius($form-range-track-border-radius);
+    @include box-shadow($form-range-track-box-shadow);
+  }
+
+  &::-moz-range-thumb {
+    width: $form-range-thumb-width;
+    height: $form-range-thumb-height;
+    @include gradient-bg($form-range-thumb-bg);
+    border: $form-range-thumb-border;
+    @include border-radius($form-range-thumb-border-radius);
+    @include box-shadow($form-range-thumb-box-shadow);
+    @include transition($form-range-thumb-transition);
+    appearance: none;
+
+    &:active {
+      @include gradient-bg($form-range-thumb-active-bg);
+    }
+  }
+
+  &::-moz-range-track {
+    width: $form-range-track-width;
+    height: $form-range-track-height;
+    color: transparent;
+    cursor: $form-range-track-cursor;
+    background-color: $form-range-track-bg;
+    border-color: transparent; // Firefox specific?
+    @include border-radius($form-range-track-border-radius);
+    @include box-shadow($form-range-track-box-shadow);
   }
 
   &:disabled {
-    color: $form-select-disabled-color;
-    background-color: $form-select-disabled-bg;
-    border-color: $form-select-disabled-border-color;
+    pointer-events: none;
+
+    &::-webkit-slider-thumb {
+      background-color: $form-range-thumb-disabled-bg;
+    }
+
+    &::-moz-range-thumb {
+      background-color: $form-range-thumb-disabled-bg;
+    }
   }
-
-  // Remove outline from select box in FF
-  &:-moz-focusring {
-    color: transparent;
-    text-shadow: 0 0 0 $form-select-color;
-  }
-}
-
-.form-select-sm {
-  padding-top: $form-select-padding-y-sm;
-  padding-bottom: $form-select-padding-y-sm;
-  padding-left: $form-select-padding-x-sm;
-  @include font-size($form-select-font-size-sm);
-}
-
-.form-select-lg {
-  padding-top: $form-select-padding-y-lg;
-  padding-bottom: $form-select-padding-y-lg;
-  padding-left: $form-select-padding-x-lg;
-  @include font-size($form-select-font-size-lg);
 }
